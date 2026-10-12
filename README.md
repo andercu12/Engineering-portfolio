@@ -51,7 +51,7 @@ Structural simulation projects focused on:
 
 - Mesh convergence studies
 
-## Robotics & Simulation
+## Kinematics
 
 Projects involving mechanical systems, motion analysis and trajectory generation.
 
