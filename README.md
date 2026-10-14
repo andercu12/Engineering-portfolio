@@ -21,7 +21,7 @@ Projects include:
 
 ## CAD & Mechanical Design
 
-Mechanical design projects developed using tools such as CATIA V5, SolidWorks, Autodesk Inventor and Solid Edge.
+Mechanical design projects developed using FreeCad and Autodesk Fusion.
 
 Projects include:
 
@@ -112,4 +112,4 @@ Each project contains its own documentation explaining:
 
 Mechanical Engineer interested in mechanical design, engineering automation, numerical simulation and technology-driven product development.
 
-This portfolio contains personal and academic engineering projects developed to demonstrate practical problem-solving and engineering methodology.
+This portfolio contains personal engineering projects developed to demonstrate practical problem-solving and engineering methodology.
