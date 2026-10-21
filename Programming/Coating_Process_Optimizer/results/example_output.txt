@@ -1,0 +1,16 @@
+Coating Process Optimizer — simplified deposition model
+
+Material: Al2O3 | Target: 0.5 mm | Length: 1000 mm | Width: 10 mm
+
+Method              Flow[g/s] Speed[mm/s] Passes Thickness[mm] Error[mm] Time[s] Energy[kWh] Score     Elapsed[s]
+Coarse grid            1.5000    40.0000      1     0.522152  0.022152  25.000    0.017361  0.047624     0.0004
+  Within ±0.1 mm: True | Completed
+Fine grid              1.6182    45.0000      1     0.500703  0.000703  22.222    0.015432  0.012151     0.2201
+  Within ±0.1 mm: True | Completed
+Local L-BFGS-B         2.0000    55.7690      1     0.499347  0.000653  17.931    0.012452  0.002784     0.0210
+  Within ±0.1 mm: True | Completed
+
+Elapsed times include the coarse seed for both refinement methods; plotting and input are excluded.
+The score is a trade-off, not a hard thickness constraint. Lower is better.
+
+Saved comparison.csv and comparison.png in results/

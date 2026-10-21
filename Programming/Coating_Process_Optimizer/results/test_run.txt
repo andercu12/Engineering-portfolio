@@ -1,0 +1,10 @@
+test_invalid_physics (test_model.ModelTests.test_invalid_physics) ... ok
+test_length_scaling (test_model.ModelTests.test_length_scaling) ... ok
+test_material_lookup (test_model.ModelTests.test_material_lookup) ... ok
+test_searches_and_local_reference (test_model.ModelTests.test_searches_and_local_reference) ... ok
+test_units_and_mass_balance (test_model.ModelTests.test_units_and_mass_balance) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.223s
+
+OK
