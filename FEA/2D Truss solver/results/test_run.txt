@@ -1,0 +1,13 @@
+test_collinear_unstable (test_solver.SolverTests.test_collinear_unstable) ... ok
+test_four_nodes (test_solver.SolverTests.test_four_nodes) ... ok
+test_horizontal_load_explains_report (test_solver.SolverTests.test_horizontal_load_explains_report) ... ok
+test_invalid_connections_retry (test_solver.SolverTests.test_invalid_connections_retry) ... ok
+test_load_on_support (test_solver.SolverTests.test_load_on_support) ... ok
+test_reordered_nodes (test_solver.SolverTests.test_reordered_nodes) ... ok
+test_too_few_nodes (test_solver.SolverTests.test_too_few_nodes) ... ok
+test_vertical_both_signs (test_solver.SolverTests.test_vertical_both_signs) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.830s
+
+OK
