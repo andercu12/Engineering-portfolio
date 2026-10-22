@@ -113,6 +113,8 @@ def draw_complete_mechanism(ax, lengths, angles):
         marker="o"
     )
 
+    ax.plot([O2[0], O4[0]], [0, 0], color="gray", linestyle="--", label="Ground")
+
     max_length = sum(lengths)
 
     ax.set_xlim(-max_length * 0.25,max_length * 0.75)
@@ -135,9 +137,9 @@ def draw_complete_mechanism(ax, lengths, angles):
 
 def animate_mechanism(lengths, initial_theta12, omega12, alpha12, F_func, J_func, J_dot_func, initial_guess):
     
-    #Animate the mechanism over one complete input revolution.
+    # Sweep configurations over 360 degrees, not a physical time simulation.
 
-    #Invalid positions are skipped.
+    # Unreachable or singular configurations are marked and the trace is broken.
     
 
     theta12_values = np.linspace(initial_theta12, initial_theta12 + 2*np.pi, 360)
@@ -161,6 +163,8 @@ def animate_mechanism(lengths, initial_theta12, omega12, alpha12, F_func, J_func
 
     ax.set_ylabel("Y [mm]")
 
+    ax.plot([0, lengths[0]], [0, 0], color="gray", linestyle="--")
+
     mechanism_line, = ax.plot([], [], marker="o", linewidth=2)
 
     trajectory_line, = ax.plot([], [], linestyle="--")
@@ -174,6 +178,11 @@ def animate_mechanism(lengths, initial_theta12, omega12, alpha12, F_func, J_func
 
         nonlocal current_guess
 
+        if frame == 0:
+            trajectory_x.clear()
+            trajectory_y.clear()
+            current_guess = np.array(initial_guess, dtype=float)
+
         theta12 = theta12_values[frame]
 
         try:
@@ -181,23 +190,27 @@ def animate_mechanism(lengths, initial_theta12, omega12, alpha12, F_func, J_func
             theta23, theta14 = (solve_position(lengths, theta12, F_func, current_guess))
 
         except RuntimeError:
+            mechanism_line.set_data([], [])
+            trajectory_x.append(np.nan)
+            trajectory_y.append(np.nan)
+            trajectory_line.set_data(trajectory_x, trajectory_y)
+            ax.set_title(f"Angle sweep: no position solution at {np.degrees(theta12):.1f}°")
+            return mechanism_line, trajectory_line
 
-            return (mechanism_line, trajectory_line)
-
-        # Previous solution becomes next initial guess.
         current_guess = np.array([theta23, theta14])
-
-        # -------------------------------
-        # Velocity
-        # -------------------------------
-
-        omega23, omega14 = (solve_velocity(lengths, (theta12, theta23, theta14), omega12, J_func))
-
-        # -------------------------------
-        # Acceleration
-        # -------------------------------
-
-        alpha23, alpha14 = (solve_acceleration(lengths, (theta12,theta23,theta14), (omega12,omega23,omega14), alpha12, J_func, J_dot_func))
+        try:
+            omega23, omega14 = solve_velocity(
+                lengths, (theta12, theta23, theta14), omega12, J_func)
+            alpha23, alpha14 = solve_acceleration(
+                lengths, (theta12, theta23, theta14),
+                (omega12, omega23, omega14), alpha12, J_func, J_dot_func)
+        except np.linalg.LinAlgError:
+            mechanism_line.set_data([], [])
+            trajectory_x.append(np.nan)
+            trajectory_y.append(np.nan)
+            trajectory_line.set_data(trajectory_x, trajectory_y)
+            ax.set_title(f"Angle sweep: singular configuration at {np.degrees(theta12):.1f}°")
+            return mechanism_line, trajectory_line
 
         O2, A, B, O4 = (joint_coordinates(lengths,(theta12,theta23,theta14)))
                 
@@ -216,7 +229,7 @@ def animate_mechanism(lengths, initial_theta12, omega12, alpha12, F_func, J_func
         trajectory_line.set_data(trajectory_x, trajectory_y)
 
         ax.set_title(
-            "Four-Bar Linkage\n"
+            "Four-Bar Linkage — angle sweep (not real-time)\n"
             f"θ2 = {np.degrees(theta12):.1f}° | "
             f"ω3 = {omega23:.2f} rad/s | "
             f"ω4 = {omega14:.2f} rad/s | "

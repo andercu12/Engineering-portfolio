@@ -1,0 +1,10 @@
+test_derivatives_against_position_differences (test_kinematics.KinematicsTests.test_derivatives_against_position_differences) ... ok
+test_full_cycle_geometry (test_kinematics.KinematicsTests.test_full_cycle_geometry) ... ok
+test_geometric_checks (test_kinematics.KinematicsTests.test_geometric_checks) ... ok
+test_singular_state (test_kinematics.KinematicsTests.test_singular_state) ... ok
+test_unreachable_angle (test_kinematics.KinematicsTests.test_unreachable_angle) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.117s
+
+OK

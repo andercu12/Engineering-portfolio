@@ -21,7 +21,8 @@ def solve_position(lengths, theta12, F_func, initial_guess):
 
     solution = root(residual, initial_guess)
 
-    if not solution.success:
+    if (not solution.success or not np.all(np.isfinite(solution.x))
+            or np.linalg.norm(residual(solution.x), ord=np.inf) > 1e-8 * max(lengths)):
 
         raise RuntimeError("Position solver failed to converge.")
 
@@ -46,6 +47,9 @@ def solve_velocity(lengths,angles, omega12 ,J_func):
 
     # Remaining columns -> unknown coordinates
     J_unknown = J[:, 1:]
+
+    if np.linalg.cond(J_unknown) > 1e12:
+        raise np.linalg.LinAlgError("Singular or near-singular linkage configuration.")
 
     rhs = (-J_input * omega12)
 
@@ -79,6 +83,9 @@ def solve_acceleration(lengths, angles, angular_velocities, alpha12, J_func, J_d
 
     J_input = J[:, 0]
     J_unknown = J[:, 1:]
+
+    if np.linalg.cond(J_unknown) > 1e12:
+        raise np.linalg.LinAlgError("Singular or near-singular linkage configuration.")
 
     dynamic_term = (J_dot @ z_dot)
 

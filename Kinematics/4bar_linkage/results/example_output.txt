@@ -1,0 +1,7 @@
+Crank-rocker example
+Lengths [mm]: 150, 50, 120, 100
+Initial angles [deg]: [45.         32.1153841  97.47372746]
+Initial angular velocities [rad/s]: [ 2.         -0.72711073  0.24532978]
+Initial angular accelerations [rad/s²]: [0.         1.30426078 2.81536183]
+Cycle duration [s]: 3.141592654
+Maximum loop residual [mm]: 7.229e-10

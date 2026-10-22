@@ -192,8 +192,14 @@ def main():
     # Animation
     # --------------------------------------------------------
 
+    print("Angle sweep only: playback timing does not represent the specified actuator motion.")
+    plt.close(fig)
     animate_mechanism(lengths, theta12, omega12, alpha12, F_func, J_func, J_dot_func, initial_guess=[theta23,theta14])
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except np.linalg.LinAlgError as exc:
+        print(f"Cannot calculate this kinematic state: {exc}")
+        plt.close("all")
