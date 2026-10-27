@@ -60,13 +60,10 @@ Git does not track empty folders. Add your input files before uploading, or crea
 
 Open a generated JSON file to review the presentation. Missing scalar information is represented as `null`; undocumented lists are represented as `[]`.
 
-To show a real result here, save a screenshot as `images/example-result.png` and replace this paragraph with:
 
-```markdown
-![Example JSON presentation](images/2d_truss_solver_output.png)
-```
+![images](images/2d_truss_solver_output.png)
 
-Generated files in `outputs/` are ignored by Git. To share a JSON example as well, copy a reviewed result to an `examples/` folder and upload that folder.
+
 
 ## Limitations
 
