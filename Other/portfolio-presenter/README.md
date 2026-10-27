@@ -41,6 +41,10 @@ portfolio-presenter/
         2d_truss_solver.md
         Coating_Process_Optimizer.md
         4bar_linkage.md
+	examples/
+		2d_truss_solver.md.json
+        Coating_Process_Optimizer.md.json
+        4bar_linkage.md.json
 	images/
 		2d_truss_solver_output
 ```
@@ -63,7 +67,7 @@ Open a generated JSON file to review the presentation. Missing scalar informatio
 
 ![images](images/2d_truss_solver_output.png)
 
-
+Generated JSON examples can be reviewed at `examples/`.
 
 ## Limitations
 
