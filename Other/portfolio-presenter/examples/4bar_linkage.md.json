@@ -1,0 +1,15 @@
+{
+    "project_title": "Four-Bar Mechanism Kinematic Analysis",
+    "version": null,
+    "status": null,
+    "stack": [
+        "Python",
+        "NumPy",
+        "SciPy",
+        "SymPy",
+        "Matplotlib"
+    ],
+    "repo": null,
+    "description": "A Python-based tool for kinematic analysis of planar four-bar linkages, featuring numerical position/velocity/acceleration analysis, symbolic computation with SymPy, and dynamic visualization. Implements loop-closure equations, Grashof checks, and modular architecture for mechanism extensions.",
+    "future_implementations": []
+}

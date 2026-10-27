@@ -1,0 +1,16 @@
+{
+    "project_title": "2D Truss Solver",
+    "version": null,
+    "status": "active",
+    "stack": [
+        "Python"
+    ],
+    "repo": null,
+    "description": "A mechanical engineering portfolio project implementing the direct stiffness method in Python. Calculates nodal displacements, support reactions and axial stresses for planar pin-jointed trusses using linear elastic, small-displacement analysis.",
+    "future_implementations": [
+        "Structured model imports",
+        "Per-element properties",
+        "General support configurations",
+        "Deformed-shape plotting"
+    ]
+}

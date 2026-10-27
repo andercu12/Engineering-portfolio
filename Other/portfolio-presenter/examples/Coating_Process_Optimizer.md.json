@@ -1,0 +1,15 @@
+{
+    "project_title": "Coating Process Optimizer",
+    "version": null,
+    "status": "active",
+    "stack": [
+        "Python",
+        "SciPy"
+    ],
+    "repo": null,
+    "description": "A Python project that optimizes coating thickness by comparing coarse grid, fine grid, and local L-BFGS-B optimization methods. It calculates predicted thickness, travel time, energy, and an objective score while balancing efficiency and accuracy.",
+    "future_implementations": [
+        "Improve deposition model using measured data",
+        "Add setup or turnaround time calculations"
+    ]
+}
