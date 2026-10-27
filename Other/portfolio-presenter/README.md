@@ -34,17 +34,17 @@ Put your engineering READMEs inside `README/`. Give each file a different name, 
 
 ```text
 portfolio-presenter/
-    main.py
-    requirements.txt
-    README.md
-    README/
-        2d_truss_solver.md
-        Coating_Process_Optimizer.md
-        4bar_linkage.md
+	main.py
+	requirements.txt
+	README.md
+	README/
+		2d_truss_solver.md
+		Coating_Process_Optimizer.md
+		4bar_linkage.md
 	examples/
 		2d_truss_solver.md.json
-        Coating_Process_Optimizer.md.json
-        4bar_linkage.md.json
+		Coating_Process_Optimizer.md.json
+		4bar_linkage.md.json
 	images/
 		2d_truss_solver_output
 ```
