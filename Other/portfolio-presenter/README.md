@@ -58,8 +58,6 @@ python main.py
 
 For example, `README/truss_solver.md` produces `outputs/truss_solver.md.json`. The script creates the output folder automatically. Running it again replaces the corresponding successful results. If an input fails, any previous result for it is left unchanged.
 
-Git does not track empty folders. Add your input files before uploading, or create the `README/` folder locally after cloning.
-
 ## Results
 
 Open a generated JSON file to review the presentation. Missing scalar information is represented as `null`; undocumented lists are represented as `[]`.
