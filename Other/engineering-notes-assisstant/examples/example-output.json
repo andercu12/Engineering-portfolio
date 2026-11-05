@@ -1,0 +1,24 @@
+[
+    {
+        "asked_question": "Explain Newton's second law using the notes.",
+        "given_answer": "Newton's second law, which states that the acceleration of an object is directly proportional to the net force acting on it and inversely proportional to its mass (F = ma), is foundational to understanding equilibrium and forces in statics. While the provided notes focus on statics and equilibrium (Newton's first law, where ΣF = 0 for no acceleration), the principles of Newton's second law underpin the analysis of dynamic systems. For example, when solving for unknowns in a free-body diagram, the equilibrium equations (ΣF_x = 0, ΣF_y = 0, ΣM_O = 0) implicitly assume that forces are balanced (ΣF = 0) or that unbalanced forces (ΣF ≠ 0) result in acceleration. The notes emphasize that support reactions and internal forces must satisfy these equilibrium conditions, which are derived from Newton's laws. However, the notes do not explicitly discuss Newton's second law in the context of acceleration; they focus on static equilibrium and force interactions governed by Newton's third law (action-reaction pairs).",
+        "source_used": [
+            "support-model-reactions.md"
+        ],
+        "answer_status": true
+    },
+    {
+        "asked_question": "What reactions can a fixed support transmit in 2D?",
+        "given_answer": "A fixed support, also called a built-in or cantilever support, prevents both translation and rotation. It transmits: $A_x$, $A_y$, and $M_A$. Therefore, it provides **three reaction unknowns** in 2D: two force components and one moment.",
+        "source_used": [
+            "support-model-reactions.md"
+        ],
+        "answer_status": true
+    },
+    {
+        "asked_question": "What is the recommended cutting speed for titanium?",
+        "given_answer": "There is no sufficient information available in the provided data to answer this question.",
+        "source_used": [],
+        "answer_status": false
+    }
+]
