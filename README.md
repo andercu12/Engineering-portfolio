@@ -65,6 +65,10 @@ Topics may include:
 
 - Motion planning
 
+## AI & Experimental Projects
+
+Projects involving LLMs, local agents and automatization.
+
 # Tools & Technologies
 
 ## CAD
@@ -88,10 +92,11 @@ Numerical optimization · Design space exploration · Mechanical design · Proce
 ```
 engineering-portfolio/
 │
-├── Programming/
+├── AI & Experimental Projects/
 ├── CAD/
-├── FEA-and-Meshing/
-└── Robotics-and-Simulation/
+├── FEA/
+├── Kinematics/
+└── Programming/
 ```
 
 Each project contains its own documentation explaining:
@@ -112,4 +117,6 @@ Each project contains its own documentation explaining:
 
 Mechanical Engineer interested in mechanical design, engineering automation, numerical simulation and technology-driven product development.
 
-This portfolio contains personal engineering projects developed to demonstrate practical problem-solving and engineering methodology.
+This portfolio showcases personal projects that combine mechanical engineering fundamentals with programming, automation and emerging technologies such as local LLMs.
+
+The projects are primarily early-stage prototypes, developed to explore technical problems, strengthen my skills and demonstrate my approach to engineering problem-solving.
