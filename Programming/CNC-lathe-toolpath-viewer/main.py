@@ -58,7 +58,7 @@ def ask_value(message):
                 return value
         except ValueError:
             pass
-        print("Introduce un número positivo, por ejemplo 50 o 50.5.")
+        print("Introduce a positive number, for example 50 o 50.5.")
 
 
 def load_commands():
