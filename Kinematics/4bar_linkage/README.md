@@ -66,10 +66,4 @@ The interactive display sweeps through input angles at a fixed playback rate; it
 
 The initial guess selects an assembly branch. Grashof and link-length checks do not guarantee that every requested configuration is reachable. Singular states are reported, and the model assumes rigid planar links and ideal joints.
 
-## Checks
 
-```bash
-python -m unittest discover -s tests -v
-```
-
-The checks cover loop closure, link lengths, numerical differentiation of position, unreachable configurations and singularity handling. See [packaging notes](docs/changes.md) for the small changes made to the original code.
