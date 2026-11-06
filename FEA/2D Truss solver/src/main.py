@@ -3,6 +3,7 @@ import numpy as np
 import pandas as pd
 import re # Check if the format matches
 import matplotlib.pyplot as plt
+from matplotlib.lines import Line2D
 from pathlib import Path
 
 
@@ -74,7 +75,7 @@ def initialize_dynamic_plot(max_length):
     
     plt.ion()
 
-    fig, ax = plt.subplots(figsize = (8, 6))
+    fig, ax = plt.subplots(figsize=(12, 4.5), constrained_layout=True)
 
     margin = max_length * 1.5
 
@@ -114,6 +115,13 @@ def draw_truss(ax, nodes, elements):
     
     x_points = np.array(extract_points_array(nodes,pos = 0))
     y_points = np.array(extract_points_array(nodes,pos = 1))
+
+    # Store connection directions to help with label placement if needed
+    node_direction = {i:[] for i in range (len(nodes))}
+
+    # --------------------------------------------------------
+    # Draw elements 
+    # --------------------------------------------------------
     
     for element in elements:
     
@@ -125,22 +133,226 @@ def draw_truss(ax, nodes, elements):
         y_coords = [y_points[node_start], y_points[node_end]]
             
         # Draw the element
-        ax.plot(x_coords, y_coords, 'b-', linewidth=2)  
+        ax.plot(x_coords, y_coords, 'b-', linewidth=3.0, solid_capstyle="round", zorder=1)  
+
+        #Direction vectors for each connected node
+        vec = np.array([x_points[node_end] - x_points[node_start], 
+                        y_points[node_end] - y_points[node_start]])
+
+        #Normalize to obtain only direction
+        mag = np.linalg.norm(vec)
+        if mag > 0:
+            node_direction[node_start].append(vec / mag)
+            node_direction[node_end].append(-vec / mag)
+
+    # --------------------------------------------------------
+    # Draw nodes
+    # --------------------------------------------------------
 
     #Draw the nodes
     ax.plot(x_points, y_points, linestyle="none", marker="o", color="blue", markersize=10)
 
+    # --------------------------------------------------------
+    # Draw node labels 
+    # --------------------------------------------------------
+
+    y_mid = 0.5 * (np.min(y_points) + np.max(y_points))
+    
     for number, (x, y) in enumerate(nodes, start=1):
-        ax.annotate(f"N{number}", (x, y), xytext=(7, 7),
-                    textcoords="offset points")
-    ax.set_aspect("equal")
-    ax.grid(True)
+        # Put top-node labels above, bottom-node labels below
+        if y > y_mid:
+            offset = (0, 10)
+            va = "bottom"
+        else:
+            offset = (0, -12)
+            va = "top"
+    
+        ax.annotate(
+            f"N{number}",
+            (x, y),
+            xytext=offset,
+            textcoords="offset points",
+            ha="center",
+            va=va,
+            fontsize=10,
+            weight="bold",
+            zorder=3,
+            bbox=dict(facecolor="white", alpha=0.8, edgecolor="none", pad=0.6)
+        )
+
+
+    # --------------------------------------------------------
+    # Axes formatting
+    # --------------------------------------------------------
+    x_min, x_max = np.min(x_points), np.max(x_points)
+    y_min, y_max = np.min(y_points), np.max(y_points)
+    
+    x_margin = max((x_max - x_min) * 0.05, 200)
+    y_margin = max((y_max - y_min) * 0.15, 200)
+
+    ax.set_xlim(x_min - x_margin, x_max + x_margin)
+    ax.set_ylim(y_min - y_margin, y_max + y_margin)
+
+    ax.set_aspect("equal", adjustable="box")
+    ax.grid(True, linestyle="--", alpha=0.5)
     ax.set_xlabel("X [mm]")
     ax.set_ylabel("Y [mm]")
     ax.set_title("2D Truss Configuration")
-    
+    ax.margins(0)
+
     ax.figure.canvas.draw()
     ax.figure.canvas.flush_events()
+
+def draw_truss_stresses(ax, nodes, elements, elements_data,fixed_node,mobile_node):
+    """
+    Draw the truss colored by axial stress sign:
+    - Red  : tension
+    - Blue : compression
+    - Gray : near zero
+    """
+
+    ax.clear()
+
+    x_points = np.array(extract_points_array(nodes, pos=0), dtype=float)
+    y_points = np.array(extract_points_array(nodes, pos=1), dtype=float)
+
+    # Tolerance to classify near-zero stresses
+    tol = 1e-9
+
+    # Store connection directions to help with label placement if needed
+    node_direction = {i: [] for i in range(len(nodes))}
+
+    # --------------------------------------------------------
+    # Draw elements with only two main colors
+    # --------------------------------------------------------
+    for idx, (n1, n2) in enumerate(elements):
+        node_start = n1 - 1
+        node_end = n2 - 1
+
+        x_coords = [x_points[node_start], x_points[node_end]]
+        y_coords = [y_points[node_start], y_points[node_end]]
+
+        stress = elements_data[idx]["axial_stress"]
+
+        if stress > tol:
+            link_colour = "red"       # Tension
+        elif stress < -tol:
+            link_colour = "blue"      # Compression
+        else:
+            link_colour = "gray"      # Zero / Almost zero stress
+
+        ax.plot(
+            x_coords, y_coords,
+            color=link_colour,
+            linewidth=3.0,
+            solid_capstyle="round",
+            zorder=1
+        )
+
+        # Direction vectors for each connected node
+        vec = np.array([
+            x_points[node_end] - x_points[node_start],
+            y_points[node_end] - y_points[node_start]
+        ])
+
+        mag = np.linalg.norm(vec)
+        if mag > 0:
+            node_direction[node_start].append(vec / mag)
+            node_direction[node_end].append(-vec / mag)
+
+        mid_x = 0.5 * (x_points[node_start] + x_points[node_end])
+        mid_y = 0.5 * (y_points[node_start] + y_points[node_end])
+
+        ax.annotate(
+            f"{stress:.2f}",
+            (mid_x, mid_y),
+            xytext=(0, 0),
+            textcoords="offset points",
+            ha="center",
+            va="center",
+            fontsize=8,
+            bbox=dict(facecolor="white", alpha=0.7, edgecolor="none", pad=0.4)
+        )
+
+    # --------------------------------------------------------
+    # Draw nodes
+    # --------------------------------------------------------
+    ax.plot(
+        x_points, y_points,
+        linestyle="none",
+        marker="o",
+        color="black",
+        markersize=8,
+        zorder=2
+    )
+
+    # --------------------------------------------------------
+    # Draw node labels 
+    # --------------------------------------------------------
+    y_mid = 0.5 * (np.min(y_points) + np.max(y_points))
+
+    for number, (x, y) in enumerate(nodes, start=1):
+        # Put top-node labels above, bottom-node labels below
+        if y > y_mid:
+            offset = (0, 10)
+            va = "bottom"
+        else:
+            offset = (0, -12)
+            va = "top"
+
+        ax.annotate(
+            f"N{number}",
+            (x, y),
+            xytext=offset,
+            textcoords="offset points",
+            ha="center",
+            va=va,
+            fontsize=10,
+            weight="bold",
+            zorder=3,
+            bbox=dict(facecolor="white", alpha=0.8, edgecolor="none", pad=0.6)
+        )
+
+    # --------------------------------------------------------
+    # Legend definition
+    # --------------------------------------------------------
+    legend_handles = [
+        Line2D([0], [0], color="red", lw=3, label="Tension"),
+        Line2D([0], [0], color="blue", lw=3, label="Compression"),
+        Line2D([0], [0], color="gray", lw=3, label="~ Zero")
+    ]
+
+    ax.legend(
+        handles=legend_handles,
+        loc="upper right",
+        fontsize=9,
+        frameon=True
+    )
+
+    # --------------------------------------------------------
+    # Axes formatting
+    # --------------------------------------------------------
+    x_min, x_max = np.min(x_points), np.max(x_points)
+    y_min, y_max = np.min(y_points), np.max(y_points)
+
+    x_margin = max((x_max - x_min) * 0.05, 200)
+    y_margin = max((y_max - y_min) * 0.15, 200)
+
+    ax.set_xlim(x_min - x_margin, x_max + x_margin)
+    ax.set_ylim(y_min - y_margin, y_max + y_margin)
+
+    ax.set_aspect("equal", adjustable="box")
+    ax.grid(True, linestyle="--", alpha=0.5)
+    ax.set_xlabel("X [mm]")
+    ax.set_ylabel("Y [mm]")
+    ax.set_title("2D Truss - Axial Stress [MPa]")
+    ax.margins(0)
+
+    ax.figure.canvas.draw()
+    ax.figure.canvas.flush_events()
+
+    ax.scatter(*fixed_node, marker="^", s=180, color="black")
+    ax.scatter(*mobile_node, marker="s", s=100, color="green")
 
 # ============================================================
 # INPUT FUNCTIONS
@@ -577,6 +789,15 @@ def main(show_plot=True, plot_path=None):
             print(f"Stress at link {element + 1}: {stress_l:.6f} MPa")
 
         print("\n--------------------------------------------------\n")
+
+
+        # --------------------------------------------------------
+        # Draw resulting truss stresses
+        # --------------------------------------------------------
+
+        fig_stress, ax_stress = plt.subplots(figsize=(12, 4.5), constrained_layout=True)
+        draw_truss_stresses(ax_stress, nodes, elements, elements_data,fixed_node,mobile_node)
+
         # --------------------------------------------------------
         # Summary
         # --------------------------------------------------------
@@ -626,9 +847,18 @@ def main(show_plot=True, plot_path=None):
 
         plt.ioff()
         if show_plot:
+
+            #Refresh plots
+            fig.canvas.draw_idle()
+            fig_stress.canvas.draw_idle()
+
+            #Block program execution until all plot windows are closed
+            plt.show(block=True)
+            
             plt.show()
         else:
             plt.close(fig)
+            plt.close(fig_stress)
         return {"nodes": nodes, "elements": elements_data, "loads": force_vector,
                 "displacements": x_total, "reactions": Reactions,
                 "stiffness": k_global, "free_dof": free_dof,
@@ -639,8 +869,6 @@ def main(show_plot=True, plot_path=None):
         plt.ioff()
         plt.close(fig)
         raise ValueError("The structure is unstable or numerically singular.") from None
-
-    
 
 if __name__ == "__main__":
     try:
