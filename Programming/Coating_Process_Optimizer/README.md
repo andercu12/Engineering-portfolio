@@ -80,4 +80,3 @@ Run the checks with:
 python -m unittest discover -s tests -v
 ```
 
-Next, I would improve the deposition model using measured data and add setup or turnaround time. That would make the process assumptions more useful than adding another optimization algorithm.
